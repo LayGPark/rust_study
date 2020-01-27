@@ -1,2 +1,3 @@
-/target
+minigrep/target
+minigrep/run.txt
 **/*.rs.bk
