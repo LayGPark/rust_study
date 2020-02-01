@@ -9,12 +9,33 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("필요 인수 부족")
-        }
-        let query = args[1].clone();
-        let filename = args[2].clone();
+    // cp. 12
+    //pub fn new(args: &[String]) -> Result<Config, &'static str> {
+    pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
+        
+        // cp. 12
+        // if args.len() < 3 {
+        //     return Err("필요 인수 부족")
+        // }
+        //
+        // let query = args[1].clone();
+        // let filename = args[2].clone();
+
+        match args.next() {
+            Some(args) => println!("name {}",args),
+            None => (),
+        }; //path
+
+        let query = match args.next() {
+            Some(args) => args,
+            None => return Err("쿼리 음슴"),
+        };
+        let filename = match args.next() {
+            Some(args) => args,
+            None => return Err("파일명 음슴"),
+        };
+
+
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
 
         Ok(Config { query, filename, case_sensitive })
@@ -35,27 +56,33 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut results = Vec::new();
-    for line in contents.lines() {
-        if line.contains(query) {
-            results.push(line)
-        }
+    contents.lines().filter(|line| line.contains(query)).collect()
 
-    }
-    results
+    // cp. 12
+    // let mut results = Vec::new();
+    
+    // for line in contents.lines() {
+    //     if line.contains(query) {
+    //         results.push(line)
+    //     }
+
+    // }
+    // results
     
 }
 
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let query = query.to_lowercase();
-    let mut results = Vec::new();
-    for line in contents.lines() {
-        if line.to_lowercase().contains(&query) {
-            results.push(line)
-        }
+    contents.lines().filter(|line| line.to_lowercase().contains(&query)).collect()
+    // cp. 12
+    // let mut results = Vec::new();
+    // for line in contents.lines() {
+    //     if line.to_lowercase().contains(&query) {
+    //         results.push(line)
+    //     }
 
-    }
-    results
+    // }
+    // results
     
 }
 
