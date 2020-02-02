@@ -4,6 +4,32 @@ pub struct Shoe {
     pub style: String,
 }
 
+
+/// shoe_size 와 동일한 신발들을 반환한다.
+///
+/// # Examples
+/// 
+/// ```
+/// #[derive(PartialEq, Debug)]
+/// pub struct Shoe {
+/// pub size: u32,
+/// pub style: String,
+/// }
+/// 
+/// let shoes = vec![
+/// shoe_size::Shoe { size: 10, style: String::from("스니커즈")},
+/// shoe_size::Shoe { size: 13, style: String::from("샌달")},
+/// shoe_size::Shoe { size: 10, style: String::from("부츠")},
+/// ];
+/// 
+/// assert_eq!(
+/// shoe_size::shoes_in_my_size(shoes, 10),
+/// vec![
+///     shoe_size::Shoe { size: 10, style: String::from("스니커즈") },
+///     shoe_size::Shoe { size: 10, style: String::from("부츠")}
+/// ]
+/// )
+/// ```
 pub fn shoes_in_my_size(shoes: Vec<Shoe>, shoe_size: u32) -> Vec<Shoe> {
     shoes.into_iter().filter(|s| s.size == shoe_size).collect()
 }
